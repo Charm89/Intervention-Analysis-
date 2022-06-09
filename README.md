@@ -3,13 +3,19 @@
 Taxi cabs in urban areas have been heavily affected by the COVID-19 pandemic. In this study, we investigate the impact of the COVID-19 pandemic on some important metrics namely average travel speed of taxis and demand for taxi cabs in Chicago, US. For this purpose, we employ Intervention Analysis with the data from some publicly available datasets including Chicago Taxi Trips. we also visualize the relationship between some COVID-19 related variables and change in demand for taxi cabs before and after pandemic in different urban districts. The results show that COVID-19 has a significant impact on the average travel speed of taxis and demand for taxi cabs. 
 ## Introduction
 COVID-19 pandemic has affected our lives in different ways. Specifically, due to the severe enacted restrictions, urban transportation has experienced a significant impact by the pandemic. Lockdown regulations have limited the mobility of citizens and health considerations have changed the transportation-related behavior of the public. Therefore, it is of great importance for transportation planners and decision-makers to identify the changes in transportation metrics caused by the pandemic to make proper decisions based on the new situation. It has also attracted scholars to investigate the impact of COVID-19 on transportation. By analyzing the travel records in Mainland, China, Huang et al. indicated the significant impact of COVID-19 on urban travels [1]. Arellana et al. studied the impact of the COVID-19 pandemic on air transport, freight transport, and urban transport. They showed that demand for motorized trips across the cities has decreased on local and nationwide scales [2]. The pandemic has also influenced the travel mode choice. Duby et al. indicated that people have been using public transport less frequently during the COVID-19 pandemic compared to a normal period as they find it difficult to observe the social distancing on public transports [3]. 
-Taxi cabs as a major transport system in urban areas have been heavily affected by the COVID-19 pandemic [4]. The availability of data in some capital cities in the world enables us to investigate the impact of the pandemic on different metrics of taxi services such as demand and travel times in urban areas. It is also important to study the relationship between the transportation metrics and different COVID-19 related variables including active case rate, phase of recovery, etc. 
+
+Taxi cabs as a major transport system in urban areas have been heavily affected by the COVID-19 pandemic [4]. The availability of data in some capital cities in the world enables us to investigate the impact of the pandemic on different metrics of taxi services such as demand and travel times in urban areas. It is also important to study the relationship between the transportation metrics and different COVID-19 related variables including active case rate, phase of recovery, etc.
+
 In this study, first, we aim to investigate the impact of the COVID-19 pandemic on some important metrics namely average speed and taxi cab demand. To this purpose, we accomplish an Intervention Analysis on the time series (also known as Interrupted Time Series Analysis) derived from the historical data. By employing Intervention Analysis, we try to investigate whether the appearance of a condition or policy (i.e., COVID-19 and its related regulations and policies) has affected a variable (e.g., average travel speed of taxis) in time. Second, we try to see if there is a relationship between some COVID-19 related variables (i.e., active case rate and also COVID-19 Community Vulnerability Index (CCVI)) and change in demand for taxi cabs before and after pandemic in different urban districts (community areas in our case). 
 ## Questions
 In this study we try to address the following questions:
+
 1-	Has the demand for taxi cabs significantly changed after the start of the pandemic? 
+
 2-	Has the pandemic impacted the travel time in Chicago? 
+
 3-	Chicago has 77 community areas and each community area has a different active case rate and COVID-19 Community Vulnerability Index (CCVI). Is there a relationship between these variables and the change in the demand for taxi cabs? 
+
 <p align="center">
 <img src="./images/case rate map.jpg" width="500">
  </p>
@@ -20,7 +26,7 @@ For this study, we use three datasets provided by Chicago Data Portal. The first
 
 <figcaption align = "left"><b>Table 1- Important attributes of the datasets.</b></figcaption>
 <p align="center">
-<img src="./images/table1.png" width="500">
+<img src="./images/table1.PNG" width="700">
  </p>
 
 
@@ -32,7 +38,7 @@ Data preparation generally includes gathering the data, data cleaning, and data 
 To prepare the data for the analysis we also need to transform the original data to a proper format. For example, this step includes transforming the date/time attribute and combining different datasets to enriched tables. Moreover, we need to transform some spatial datasets using GIS applications (e.g. ArcMap) to assimilate the spatial units. In our case, the “COVID-19 cases by ZIP code” dataset provides the COVID-19 case rates for a set of points (coordinate of the ZIP codes) throughout the city, and on the other hand, the start and end location of taxi trips are declared based on community areas. Since there is not a 1-by-1 relationship between community areas and the COVID-19 dataset (presented by ZIP codes) (Figure 1), we need to transform the COVID-19 dataset to have the case rates in each community area (Figure 2). 
 
 <p align="center">
-<img src="./images/spatial transformation.jpeg" width="1000">
+<img src="./images/spatial transformation.PNG" width="1000">
  </p>
 <figcaption align = "left"><b>Figure 2- Spatial data transformation. To have COVID-19 related variables and transportation variables in the same spatial units (i.e., community areas), the COVID-19 data is spatially transformed.  </b></figcaption>
 
@@ -59,6 +65,7 @@ Figure 5 indicates the weekly average taxi travel speed before and after the pan
  </p>
 <figcaption align = "left"><b>Figure 5- Weekly COVID-19 cases and average taxi travel speed.</b></figcaption>
 
+
 We investigate the impact of the pandemic on the average travel speed by performing an Intervention Analysis. The basis of Intervention Analysis is time series analysis and prediction. The first step in Intervention Analysis is to predict future values of a variable (e.g., average travel speed) using the time series data before the pandemic and then we compare the predicted variable with the real values. We use an ARIMA time series model to predict the average taxi speed. Figure 6 shows the seasonal decomposition of the time series of average taxi speed before the pandemic using the ARIMA model. 
 
 <p align="center">
@@ -76,14 +83,14 @@ An initial step time series modeling is to stationarizing the data. By stationar
 
 <figcaption align = "left"><b>Table 2 - Results of Dickey-Fuller test on the original time series.</b></figcaption>
 <p align="center">
-<img src="./images/table2.png" width="500">
+<img src="./images/table2.PNG" width="500">
  </p>
 
 We take the first difference of time series data to make it stationary and repeat the Dickey-Fuller test. The results of the test after taking the test difference imply the stationarity of the results (p-value = 0.001054).
 
 <figcaption align = "left"><b>Table 3 - Results of Dickey-Fuller test after taking the first difference.</b></figcaption>
 <p align="center">
-<img src="./images/table3.png" width="500">
+<img src="./images/table3.PNG" width="500">
  </p>
  
 #### Building the model and prediction
@@ -91,7 +98,7 @@ We use ACF and PACF charts to find the optimal parameters for the seasonal ARIMA
 
 <figcaption align = "left"><b>Table 4-summary result of built seasonal ARIMA model.</b></figcaption>
 <p align="center">
-<img src="./images/table4.png" width="500">
+<img src="./images/table4.PNG" width="500">
  </p>
 
 The average travel speed is predicted for the period after the start of the pandemic (after March 2020). Figure 8 shows the predicted and observed average travel speed in the same chart. As can be seen in the chart it seems that there is a significant difference between the observed and predicted values which we infer it as the impact of COVID-19 on the average travel speed of taxi cabs in Chicago. We also statistically test if these two sets of values (observed and predicted time series) are significantly different. There are many statistical tests for this purpose, but we use a t-test for simplicity. The calculated p-value of the t-test is (4.129560687737479e-05) which suggests a significant difference between the prediction and observed values. 
@@ -120,7 +127,7 @@ We try to examine if there is a relationship between two COVID-19 related variab
  </p>
 <figcaption align = "left"><b>Figure 11- Change in the Taxi Demand before and after pandemic Vs. CCVI.</b></figcaption>
 
-# #Conclusions 
+## Conclusions 
 This study investigated some potential impacts of the COVID-19 pandemic on taxi travel in Chicago, US. We showed that the demand for taxi cabs has significantly dropped after the start of the pandemic. By using an intervention analysis, we also showed that the pandemic has interrupted the average travel speed of taxi cabs. The average travel speed has meaningfully increased after the start of the pandemic; specifically, if we compare the observations with the scenario in which the COVID-19 pandemic had not happened. We also showed that there is potentially a relationship between the change in the taxi demand before and after the pandemic and CCVI. We suggest that future studies elaborate on the relationship between these two variables. 
 
   ### References
