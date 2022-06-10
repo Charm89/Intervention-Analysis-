@@ -1,6 +1,13 @@
 # Intervention Analysis: Assessing the Impact of the COVID-19 Pandemic on Taxi Travel in Chicago
 ## Overview 
 Taxi cabs in urban areas have been heavily affected by the COVID-19 pandemic. In this study, we investigate the impact of the COVID-19 pandemic on some important metrics namely average travel speed of taxis and demand for taxi cabs in Chicago, US. For this purpose, we employ Intervention Analysis with the data from some publicly available datasets including Chicago Taxi Trips. we also visualize the relationship between some COVID-19 related variables and change in demand for taxi cabs before and after pandemic in different urban districts. The results show that COVID-19 has a significant impact on the average travel speed of taxis and demand for taxi cabs. 
+
+## Dependencies 
+sodapy<br /> 
+statsmodels<br /> 
+Pandas <br /> 
+Numpy<br /> 
+
 ## Introduction
 COVID-19 pandemic has affected our lives in different ways. Specifically, due to the severe enacted restrictions, urban transportation has experienced a significant impact by the pandemic. Lockdown regulations have limited the mobility of citizens and health considerations have changed the transportation-related behavior of the public. Therefore, it is of great importance for transportation planners and decision-makers to identify the changes in transportation metrics caused by the pandemic to make proper decisions based on the new situation. It has also attracted scholars to investigate the impact of COVID-19 on transportation. By analyzing the travel records in Mainland, China, Huang et al. indicated the significant impact of COVID-19 on urban travels [1]. Arellana et al. studied the impact of the COVID-19 pandemic on air transport, freight transport, and urban transport. They showed that demand for motorized trips across the cities has decreased on local and nationwide scales [2]. The pandemic has also influenced the travel mode choice. Duby et al. indicated that people have been using public transport less frequently during the COVID-19 pandemic compared to a normal period as they find it difficult to observe the social distancing on public transports [3]. 
 
@@ -34,7 +41,9 @@ For this study, we use three datasets provided by Chicago Data Portal. The first
 Since the Taxi Trips dataset used in this study is large, downloading and working with this data on a local machine is not a convenient option for us. Accordingly, we decided to use the data API provided by the Chicago Data Portal which enables us to programmatically access the publicly available dataset. The data is accessible through Socrata Open Data API that supports web-based data queries and a couple of languages including Python, PowerShell, and jQuery. We use the Python package “Sodapy” along with SoQL (Socrata Query Language) to efficiently query the required data. Using SoQL enables us to transform the data to the desired format in the server machine and retrieves lightweight summary tables required in the downstream analysis.  
 ### Data Preparation
 Data preparation generally includes gathering the data, data cleaning, and data transformation. We skip the first step (gathering the data) as data is gathered by the City of Chicago.
+
  In the data cleaning step, we remove the data with extraordinary large or small attribute values (e.g. travel time). We also discard the records for which the pick-up and drop-off attribute is null (this step is performed only if the mentioned location information is required in the analysis). 
+ 
 To prepare the data for the analysis we also need to transform the original data to a proper format. For example, this step includes transforming the date/time attribute and combining different datasets to enriched tables. Moreover, we need to transform some spatial datasets using GIS applications (e.g. ArcMap) to assimilate the spatial units. In our case, the “COVID-19 cases by ZIP code” dataset provides the COVID-19 case rates for a set of points (coordinate of the ZIP codes) throughout the city, and on the other hand, the start and end location of taxi trips are declared based on community areas. Since there is not a 1-by-1 relationship between community areas and the COVID-19 dataset (presented by ZIP codes) (Figure 1), we need to transform the COVID-19 dataset to have the case rates in each community area (Figure 2). 
 
 <p align="center">
@@ -48,14 +57,15 @@ The first cases of COVID-19 in Chicago were tested positive in the early March 2
 <p align="center">
 <img src="./images/daily number of trips.png" width="800">
  </p>
-<figcaption align = "left"><b>Figure 3- Daily number of taxi trips in Chicago. </b></figcaption>
+<figcaption align = "left"><b>Figure 3- Daily number of taxi trips in Chicago. </b></figcaption><br /> <br /> 
+
 
 Figure 4 shows the daily number of COVID-19 cases and the daily number of trips after the start of the pandemic in the same chart. After the start of the pandemic, the number of taxi trips experiences the lowest value in its history. However, after a decrease in the number of COVID-19 cases in Jun 2020, the demand for taxi cabs started its ascending move. The total number of trips reaches its peak in October 2020 where the second wave of COVID-19 starts and again causes a decrease in the number of taxi trips in November and December 2020. As the number of active cases starts going down in January 2020, we witness a rise in the demand for taxi trips. An interesting observation is that even though the second wave of COVIS-19 was more severe than the first one, the demand for taxi cabs is higher during the second wave. This observation can be associated with alleviated concerns about the risk of using public transport, increased availability of personal protective equipment such as face masks, and new recovery phases. 
 
 <p align="center">
 <img src="./images/daily covid cases_vs trips.png" width="800">
  </p>
-<figcaption align = "left"><b>Figure 4- Daily number of COVID-19 cases and daily number of trips.</b></figcaption>
+<figcaption align = "left"><b>Figure 4- Daily number of COVID-19 cases and daily number of trips after the start of the pandemic.</b></figcaption>
 
 ### Impact of COVID-19 on average travel speed
 Figure 5 indicates the weekly average taxi travel speed before and after the pandemic. One intuitive approach to finding the impact of COVID-19 on taxi travel speed is to compare the travel speed at some point before and after the pandemic. However, such a comparison is not a powerful approach to indicate or rule out the impact of a variable. As an example, the steadiness of a variable over time might be the result of an intervention however a simple comparison interprets it as a non-interrupted behavior. Simple speaking, using a point-to-point comparison, most of the information in a time series is not considered. Moreover, such variables have seasonal variations, and we need to somehow take these seasonal variations into account. 
@@ -63,7 +73,7 @@ Figure 5 indicates the weekly average taxi travel speed before and after the pan
 <p align="center">
 <img src="./images/Average Travel Speed.png" width="800">
  </p>
-<figcaption align = "left"><b>Figure 5- Weekly COVID-19 cases and average taxi travel speed.</b></figcaption>
+<figcaption align = "left"><b>Figure 5- Weekly COVID-19 cases and average taxi travel speed.</b></figcaption><br /> <br /> 
 
 
 We investigate the impact of the pandemic on the average travel speed by performing an Intervention Analysis. The basis of Intervention Analysis is time series analysis and prediction. The first step in Intervention Analysis is to predict future values of a variable (e.g., average travel speed) using the time series data before the pandemic and then we compare the predicted variable with the real values. We use an ARIMA time series model to predict the average taxi speed. Figure 6 shows the seasonal decomposition of the time series of average taxi speed before the pandemic using the ARIMA model. 
